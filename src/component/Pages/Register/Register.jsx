@@ -5,20 +5,21 @@ import signUpImg from '../../../assets/Images/Login/register.jpg'
 
 import Swal from 'sweetalert2';
 import useAuth from '../../../Hooks/useAuth';
+import useAxiosPublic from '../../../Hooks/useAxiosPublic';
 
-// import useAxiosPublic from '../../../Hook/useAxiosPublic';
+
 
 const Register = () => {
     const { setLoading, createUser, signIn, logOut, updateUserProfile, googleSignIn } = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const [signUpError, setSignUPError] = useState('');
-    // const axiosPublic = useAxiosPublic();
+    const axiosPublic = useAxiosPublic();
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || '/';
     const handleSignUp = (data) => {
-        // console.log(data)
+        console.log(data)
         setSignUPError('');
         createUser(data.email, data.password)
             .then(result => {
@@ -31,25 +32,26 @@ const Register = () => {
                             email: data.email,
                             photo: data.photo
                         }
-                        // axiosPublic.post('/users', userInfo)
-                        //     .then(res => {
-                        //         if (res.data.insertedId) {
-                        //             // console.log('user added to the database')
-                        //             Swal.fire({
-                        //                 position: 'top-end',
-                        //                 icon: 'success',
-                        //                 title: 'User created successfully.',
-                        //                 showConfirmButton: false,
-                        //                 timer: 1500
-                        //             });
-                        //             setLoading(false)
-                        //             navigate('/')
-                        //         }
-                        //         else {
-                        //             setLoading(false)
-                        //             navigate('/')
-                        //         }
-                        //     })
+                        console.log(userInfo)
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    // console.log('user added to the database')
+                                    Swal.fire({
+                                        position: 'top-end',
+                                        icon: 'success',
+                                        title: 'User created successfully.',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    setLoading(false)
+                                    navigate('/')
+                                }
+                                else {
+                                    setLoading(false)
+                                    navigate('/')
+                                }
+                            })
 
 
                     })
@@ -73,24 +75,24 @@ const Register = () => {
                 console.log(loggedUser)
                 const savedUser = { name: loggedUser.displayName, email: loggedUser.email, photo: loggedUser.photoURL }
                 axiosPublic.post('/users', savedUser)
-                // .then(res => {
-                //     if (res.data.insertedId) {
-                //         console.log('user added to the database')
-                //         Swal.fire({
-                //             position: 'top-end',
-                //             icon: 'success',
-                //             title: 'User created successfully.',
-                //             showConfirmButton: false,
-                //             timer: 1500
-                //         });
-                //         setLoading(false)
-                //         navigate(from, { replace: true });
-                //     }
-                //     else {
-                //         setLoading(false)
-                //         navigate(from, { replace: true });
-                //     }
-                // })
+                    .then(res => {
+                        if (res.data.insertedId) {
+                            console.log('user added to the database')
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'User created successfully.',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            setLoading(false)
+                            navigate(from, { replace: true });
+                        }
+                        else {
+                            setLoading(false)
+                            navigate(from, { replace: true });
+                        }
+                    })
 
             })
             .catch(error => {
@@ -132,7 +134,7 @@ const Register = () => {
                             required: "Password is required",
                             minLength: { value: 6, message: "Password must be 6 characters long" },
                             pattern: { value: /(?=.*[A-Z])(?=.*[!@#$&*%^])(?=.*[0-9])/, message: 'Password must have uppercase, number and special characters' }
-                        })} className="input input-bordered w-full text-white" />
+                        })} className="input input-bordered w-full" />
                         {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
                     </div>
 

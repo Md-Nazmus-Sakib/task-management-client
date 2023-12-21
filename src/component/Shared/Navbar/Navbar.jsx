@@ -1,14 +1,29 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import useAuth from '../../../Hooks/useAuth';
 
 const Navbar = () => {
-
+    const { user, loading, setLoading, createUser, signIn, logOut, setSearchValue } = useAuth();
+    const handelLogout = () => {
+        logOut()
+            .then(() => { })
+            .catch(error => console.log(error))
+    }
+    if (loading) {
+        return <div className='flex justify-center items-center w-full h-screen'>
+            <span className="loading loading-bars loading-lg text-secondary"></span>
+        </div>
+    }
     const myLinks = <>
         <li><NavLink to={'/'}>Home</NavLink></li>
         <li><NavLink to={'/about'}>About</NavLink></li>
         <li><NavLink to={'/project'}>Project</NavLink></li>
         <li><NavLink to={'/blog'}>Blog</NavLink></li>
-        <li><NavLink to={'/login'}>Login</NavLink></li>
+        {
+            user ? <li><button className='btn btn-ghost m-0 p-2' onClick={handelLogout} >LogOut</button></li> :
+                <li><NavLink to={'/login'}>Login</NavLink></li>
+        }
+
     </>
     return (
         <div>

@@ -5,16 +5,17 @@ import loginImg from '../../../assets/Images/Login/login.jpeg'
 
 import Swal from 'sweetalert2';
 import useAuth from '../../../Hooks/useAuth';
+import useAxiosPublic from '../../../Hooks/useAxiosPublic';
 
-// import Swal from 'sweetalert2';
 
-// import useAxiosPublic from '../../../Hook/useAxiosPublic';
+
+
 
 const Login = () => {
     const { setLoading, createUser, signIn, logOut, updateUserProfile, googleSignIn } = useAuth();
     const [loginError, setLoginError] = useState('');
 
-    // const axiosPublic = useAxiosPublic();
+    const axiosPublic = useAxiosPublic();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -28,7 +29,7 @@ const Login = () => {
         signIn(data.email, data.password)
             .then(result => {
                 const displayUser = result.user;
-                // console.log(displayUser)
+                console.log(displayUser)
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -36,7 +37,7 @@ const Login = () => {
                     showConfirmButton: false,
                     timer: 1500
                 })
-                navigate(from, { replace: true });
+                // navigate(from, { replace: true });
             })
             .catch(error => {
                 console.log(error)
@@ -51,25 +52,25 @@ const Login = () => {
                 const loggedUser = result.user;
                 console.log(loggedUser)
                 const savedUser = { name: loggedUser.displayName, email: loggedUser.email, photo: loggedUser.photoURL }
-                // axiosPublic.post('/users', savedUser)
-                //     .then(res => {
-                //         if (res.data.insertedId) {
-                //             console.log('user added to the database')
-                //             Swal.fire({
-                //                 position: 'top-end',
-                //                 icon: 'success',
-                //                 title: 'User created successfully.',
-                //                 showConfirmButton: false,
-                //                 timer: 1500
-                //             });
-                //             setLoading(false)
-                //             navigate(from, { replace: true });
-                //         }
-                //         else {
-                //             setLoading(false)
-                //             navigate(from, { replace: true });
-                //         }
-                //     })
+                axiosPublic.post('/users', savedUser)
+                    .then(res => {
+                        if (res.data.insertedId) {
+                            console.log('user added to the database')
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'User created successfully.',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            setLoading(false)
+                            navigate(from, { replace: true });
+                        }
+                        else {
+                            setLoading(false)
+                            navigate(from, { replace: true });
+                        }
+                    })
 
             })
             .catch(error => {
@@ -101,7 +102,7 @@ const Login = () => {
                                 required: "Password is required",
                                 minLength: { value: 6, message: 'Password must be 6 characters or longer' }
                             })}
-                            className="input input-bordered w-full text-white" />
+                            className="input input-bordered w-full" />
 
                         {errors.password && <p className='text-red-600'>{errors.password?.message}</p>}
                     </div>
