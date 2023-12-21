@@ -4,6 +4,7 @@ import ErrorPage from "../component/Shared/ErrorPage/ErrorPage";
 import Home from "../component/Pages/Home/Home/Home";
 import Login from "../component/Pages/Login/Login";
 import Register from "../component/Pages/Register/Register";
+import TaskDashboard from "../component/Pages/TaskDashboard/TaskDashboard";
 
 export const router = createBrowserRouter([
     {
@@ -13,15 +14,19 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Home></Home>,
+                element: <Home></Home>
             },
             {
                 path: "/login",
-                element: <Login></Login>,
+                element: <Login></Login>
             },
             {
                 path: "/register",
-                element: <Register></Register>,
+                element: <Register></Register>
+            },
+            {
+                path: "/dashboard",
+                element: <TaskDashboard></TaskDashboard>
             },
         ],
     },
