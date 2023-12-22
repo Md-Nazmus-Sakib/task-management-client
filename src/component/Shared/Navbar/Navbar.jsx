@@ -17,7 +17,7 @@ const Navbar = () => {
     const myLinks = <>
         <li><NavLink to={'/'}>Home</NavLink></li>
         <li><NavLink to={'/about'}>About</NavLink></li>
-        <li><NavLink to={'/project'}>Project</NavLink></li>
+        <li><NavLink to={'/benefit'}>Benefit</NavLink></li>
         <li><NavLink to={'/blog'}>Blog</NavLink></li>
         {
             user ? <li><button className='btn btn-ghost m-0 p-2' onClick={handelLogout} >LogOut</button></li> :

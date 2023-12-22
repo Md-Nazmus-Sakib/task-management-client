@@ -20,7 +20,7 @@ const TaskManagement = ({ allTask, taskRefetch }) => {
 
 
     return (
-        <div className='grid grid-cols-3 gap-4 my-12'>
+        <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 my-12'>
             {
                 statuses.map((status, index) => <TaskSection
                     key={index}
@@ -29,6 +29,7 @@ const TaskManagement = ({ allTask, taskRefetch }) => {
                     onGoings={onGoings}
                     completes={completes}
                     taskRefetch={taskRefetch}
+                    allTask={allTask}
                 >
 
                 </TaskSection>

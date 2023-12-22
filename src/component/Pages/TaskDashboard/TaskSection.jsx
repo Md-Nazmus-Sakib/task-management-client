@@ -5,7 +5,7 @@ import { useDrop } from 'react-dnd';
 import useAxiosSecret from '../../../Hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 
-const TaskSection = ({ status, allTodo, onGoings, completes, taskRefetch }) => {
+const TaskSection = ({ status, allTodo, onGoings, completes, taskRefetch, allTask }) => {
     const axiosSecure = useAxiosSecret();
     const [{ isOver }, drop] = useDrop(() => ({
         accept: "task",
@@ -50,15 +50,16 @@ const TaskSection = ({ status, allTodo, onGoings, completes, taskRefetch }) => {
     }
     return (
 
-        <div ref={drop} className={`${isOver ? "bg-slate-300" : ""} rounded-lg`}>
+        <div ref={drop} className={`${isOver ? "bg-slate-300" : ""} rounded-lg `}>
 
             <TaskHeader text={text} bg={bg} count={count}  ></TaskHeader>
-            <div>
+            <div className=' '>
                 {
                     count?.length > 0 && count?.map(task => <ShowTask
                         key={task._id}
                         task={task}
                         taskRefetch={taskRefetch}
+                        allTask={allTask}
                     ></ShowTask>)
                 }
             </div>

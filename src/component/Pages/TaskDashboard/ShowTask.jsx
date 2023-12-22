@@ -3,11 +3,12 @@ import { useDrag } from 'react-dnd';
 import { FaBookOpen, FaFolderOpen, FaRegFileAlt, FaTrashAlt } from "react-icons/fa";
 import Swal from 'sweetalert2';
 import useAxiosSecret from '../../../Hooks/useAxiosSecure';
+import TaskEditModal from './TaskEditModal';
 
-const ShowTask = ({ task, taskRefetch }) => {
+const ShowTask = ({ task, taskRefetch, allTask }) => {
     const axiosSecure = useAxiosSecret();
     const [editTask, setEditTask] = useState({});
-    console.log(task)
+    // console.log(editTask)
     const [{ isDragging }, drag] = useDrag(() => ({
         type: "task",
         item: { id: task._id },
@@ -15,35 +16,26 @@ const ShowTask = ({ task, taskRefetch }) => {
             isDragging: !!monitor.isDragging()
         })
     }))
-    const handelEdit = (task) => {
+    const handelEdit = (id) => {
+        // console.log(id)
+
+        const editable = allTask.find(item => item._id === id)
+
+        // console.log(editable)
+        setEditTask(editable)
         document.getElementById('my_modal_5').showModal()
-        setEditTask(task)
     }
 
-    const handleUpdateCourse = (data) => {
-        // const classUpdateDetail = {
-        //     title: data.title,
-        //     coursePhoto: data.photo,
-        //     price: parseInt(data.price),
-        //     details: data.details,
-        // }
+    const handleEditTask = () => {
 
-        axiosSecure.put(`/class/${updateClass._id}`, classUpdateDetail)
-            .then(res => {
-                if (res.data.modifiedCount > 0) {
-                    classRefetch();
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Course Modify Successfully.',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+    }
 
-                    document.getElementById('my_modal_5').close()
-                    setUpdateClass({})
-                }
-            })
+
+
+    const handelClose = () => {
+        setEditTask({})
+        document.getElementById('my_modal_5').close()
+
     }
 
     const handelDelete = (id) => {
@@ -75,19 +67,20 @@ const ShowTask = ({ task, taskRefetch }) => {
         })
     }
     return (
-        <div ref={drag}>
-            <div className={`${isDragging ? "opacity-25" : "opacity-100"} bg-slate-400 text-white p-4 shadow-xl my-4 cursor-grab rounded-xl`}>
+        <div >
+            <div ref={drag} className={`${isDragging ? "opacity-25" : "opacity-100"} bg-slate-400 text-white p-4 shadow-xl my-4 cursor-grab rounded-xl`}>
                 <h2 className=" text-md font-bold">{task?.title}</h2>
                 <h2 >{task?.description}</h2>
                 <h2 >{task?.priority}</h2>
                 <h2 className="">{task?.deadline}</h2>
 
-                <button onClick={() => handelEdit(task)} className="tooltip text-orange-600 p-4 text-xl" data-tip="Edit"><FaRegFileAlt /></button>
+                <button onClick={() => handelEdit(task?._id)} className="tooltip text-orange-600 p-4 text-xl" data-tip="Edit"><FaRegFileAlt /></button>
                 <button className="tooltip text-indigo-600 p-4 text-xl" data-tip="Details"><FaBookOpen /></button>
                 <button onClick={() => handelDelete(task?._id)} className="tooltip text-red-600 p-4 text-xl" data-tip="Delete"><FaTrashAlt /></button>
 
 
             </div>
+            <TaskEditModal editTask={editTask} handleEditTask={handleEditTask} handelClose={handelClose}></TaskEditModal>
         </div>
     );
 };

@@ -9,7 +9,7 @@ const AddTask = ({ taskRefetch }) => {
     const handelAddTask = (data) => {
         const task = { ...data, status: 'todo' }
 
-        console.log(task)
+        // console.log(task)
 
         axiosSecure.post('/task', task)
             .then(res => {
@@ -50,9 +50,9 @@ const AddTask = ({ taskRefetch }) => {
                     <div className="form-control w-full">
                         <label htmlFor="description" className="text-xl my-2 ">Description</label>
                         <input id='description' autoComplete="description" type="text" {...register("description", {
-                            required: "Title is Required"
+                            required: "Description is Required"
                         })} className="input input-bordered w-full " />
-                        {errors.title && <p className='text-red-500'>{errors.title.message}</p>}
+                        {errors.description && <p className='text-red-500'>{errors.description.message}</p>}
                     </div>
                 </div>
                 <div className='mx-4 sm:flex gap-4'>
