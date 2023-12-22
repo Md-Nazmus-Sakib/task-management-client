@@ -1,14 +1,45 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import useAxiosSecret from '../../../Hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
 
-const AddTask = () => {
+const AddTask = ({ taskRefetch }) => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const axiosSecure = useAxiosSecret();
+    const handelAddTask = (data) => {
+        const task = { ...data, status: 'todo' }
+
+        console.log(task)
+
+        axiosSecure.post('/task', task)
+            .then(res => {
+
+                if (res.data.insertedId) {
+                    reset()
+                    taskRefetch();
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Task Added Successfully.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+
+            })
+            .catch(error => console.log(error.message))
+
+    }
+
+
+
+
     return (
         <div>
+            <h2 className='text-3xl font-semibold text-center my-4'>Add Task</h2>
 
-
-            <form>
-                <div className='mx-4 flex gap-4'>
+            <form onSubmit={handleSubmit(handelAddTask)}>
+                <div className='mx-4 sm:flex gap-4'>
                     <div className="form-control w-full">
                         <label htmlFor="title" className="text-xl my-2">Title</label>
                         <input id='title' autoComplete="title" type="text" {...register("title", {
@@ -24,7 +55,7 @@ const AddTask = () => {
                         {errors.title && <p className='text-red-500'>{errors.title.message}</p>}
                     </div>
                 </div>
-                <div className='mx-4 flex gap-4'>
+                <div className='mx-4 sm:flex gap-4'>
                     <div className="form-control w-full my-6">
                         <label htmlFor="priority" className="text-xl my-2">Priority</label>
                         <select id='priority' defaultValue="" {...register('priority', { required: 'Priority field is required' })}
